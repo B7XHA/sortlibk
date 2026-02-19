@@ -244,7 +244,7 @@
         links[code] = url;
         localStorage.setItem("shortLinks", JSON.stringify(links));
 
-        const shortUrl = window.location.origin + "/?r=" + code;
+        const shortUrl = window.location.origin +/sortlibk+ "/?r=" + code;
 
         shortLinkDiv.textContent = shortUrl;
         resultBox.style.display = "block";
