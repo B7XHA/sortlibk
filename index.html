@@ -143,7 +143,7 @@
 
 <div class="container">
     <h1>🔗 مختصر الروابط</h1>
-    <p class="subtitle">الآن مع tiny.trails - مجاني تماماً بدون حسابات</p>
+    <p class="subtitle">الآن مع is.gd - مجاني وموثوق</p>
 
     <!-- إعلان علوي -->
     <div class="ad-box">
@@ -221,25 +221,20 @@
         }
 
         try {
-            // استخدام tiny.trails API - مجاني تماماً بدون توكن
-            const response = await fetch("https://api.trls.link/pave", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    url: url
-                })
-            });
-
+            // استخدام is.gd API - مجاني تماماً بدون توكن
+            const response = await fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(url)}`);
+            
             if (!response.ok) {
-                alert("فشل الاختصار، حاول مرة أخرى");
-                return;
+                throw new Error("فشل الاتصال بـ is.gd");
             }
 
-            const data = await response.json();
-            // الرابط المختصر يكون على شكل: https://api.trls.link/t/{trail_id}
-            const shortUrl = `https://api.trls.link/t/${data.trail_id}`;
+            const shortUrl = await response.text();
+
+            // is.gd قد يعيد رسالة خطأ إذا كان الرابط غير صالح
+            if (shortUrl.startsWith("error")) {
+                alert("is.gd: " + shortUrl);
+                return;
+            }
 
             shortLinkDiv.textContent = shortUrl;
             resultBox.style.display = "block";
@@ -263,8 +258,8 @@
 
 <!-- ملاحظة بسيطة -->
 <div style="max-width: 850px; margin: 20px auto; background: #1e293b; padding: 15px; border-radius: 12px; color: #cbd5e1; text-align: center; font-size: 14px;">
-    ✨ الروابط المختصرة صالحة لمدة 3 أيام. هذا مشروع مفتوح المصدر وخصوصي تماماً.
+    ✨ is.gd خدمة اختصار موثوقة ومجانية. الروابط لا تنتهي إلا إذا كانت غير نشطة لفترة طويلة.
 </div>
 
 </body>
-</html>
+    </html>
