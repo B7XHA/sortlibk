@@ -218,15 +218,16 @@
         }
 
         try {
-            // تم استبدال API بـ API اختصار جاهز من الانترنت (is.gd)
-            const response = await fetch("https://is.gd/create.php?format=simple&url=" + encodeURIComponent(url));
-            const shortUrl = await response.text();
-
-            if (!shortUrl || !shortUrl.startsWith("http")) {
+            // استخدام shrtco.de API لدعم CORS مباشرة في المتصفح
+            const response = await fetch("https://api.shrtco.de/v2/shorten?url=" + encodeURIComponent(url));
+            const data = await response.json();
+            
+            if (!data.ok) {
                 alert("فشل الاختصار عبر API");
                 return;
             }
 
+            const shortUrl = data.result.full_short_link;
             shortLinkDiv.textContent = shortUrl;
             resultBox.style.display = "block";
 
@@ -248,4 +249,4 @@
 </script>
 
 </body>
-</html>
+            </html>
