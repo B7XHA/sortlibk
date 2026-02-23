@@ -223,7 +223,7 @@
     const shortLinkDiv = document.getElementById("shortLink");
     const copyBtn = document.getElementById("copyBtn");
 
-    btn.onclick = () => {
+    btn.onclick = async () => {
         let url = input.value.trim();
 
         if (!url) {
@@ -242,18 +242,32 @@
             return;
         }
 
-        const links = JSON.parse(localStorage.getItem("shortLinks") || "{}");
-        const code = generateCode();
+        // ──────────────────────────────
+        // استخدام is.gd API (بدون مفتاح، بدون تسجيل)
+        const apiUrl = `https://is.gd/create.php?format=simple&url=${encodeURIComponent(url)}`;
 
-        links[code] = url;
-        localStorage.setItem("shortLinks", JSON.stringify(links));
+        try {
+            const response = await fetch(apiUrl);
 
-        const shortUrl = window.location.origin +"/sortlibk" + "/?r=" + code;
+            if (!response.ok) {
+                alert("خطأ في الاتصال بالخدمة: " + response.status);
+                return;
+            }
 
-        shortLinkDiv.textContent = shortUrl;
-        resultBox.style.display = "block";
+            const shortUrl = await response.text();  // يرجع الرابط كنص مباشرة
 
-        navigator.clipboard.writeText(shortUrl);
+            if (shortUrl.startsWith("http")) {
+                shortLinkDiv.textContent = shortUrl;
+                resultBox.style.display = "block";
+
+                navigator.clipboard.writeText(shortUrl);
+            } else {
+                alert("خطأ: " + shortUrl);
+            }
+
+        } catch (err) {
+            alert("مشكلة في الاتصال: " + err.message);
+        }
     };
 
     copyBtn.onclick = () => {
