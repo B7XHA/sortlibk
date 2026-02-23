@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مختصر الروابط - TinyURL</title>
+<title>مختصر الروابط</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
@@ -25,16 +25,19 @@ h1{font-size:2.3rem;margin-bottom:10px;color:#4ade80;}
 <body>
 <div class="container">
 <h1>🔗 مختصر الروابط</h1>
-<p class="subtitle">الآن مع TinyURL - تحويل مباشر</p>
+<p class="subtitle">الآن مع shrtco.de - تحويل مباشر</p>
+
 <div class="input-group">
 <input type="text" id="urlInput" placeholder="ضع الرابط هنا https://example.com">
 <button id="shortenBtn">اختصر الرابط</button>
 </div>
+
 <div class="result" id="resultBox">
 <h3>تم الاختصار بنجاح</h3>
 <div class="short-link" id="shortLink"></div>
 <button class="copy-btn" id="copyBtn">نسخ الرابط</button>
 </div>
+
 <div class="footer">موقع اختصار روابط - مجاني تماماً</div>
 </div>
 
@@ -50,15 +53,23 @@ btn.addEventListener("click", async ()=>{
     if(!url){alert("الرجاء إدخال الرابط");return;}
     if(!url.startsWith("http://")&&!url.startsWith("https://")){url="https://"+url;}
     try{new URL(url);}catch(e){alert("الرابط غير صالح");return;}
-    btn.disabled=true; btn.textContent="جارٍ الاختصار...";
+    
+    btn.disabled=true;
+    btn.textContent="جارٍ الاختصار...";
+    
     try{
-        const response=await fetch(`https://api.tinyurl.com/create?url=${encodeURIComponent(url)}&domain=tiny.one`, {method:'GET'});
-        if(!response.ok) throw new Error("فشل الاتصال بـ TinyURL");
-        const shortUrl = await response.text(); // TinyURL API يرسل الرابط المختصر مباشرة
+        const res = await fetch(`https://api.shrtco.de/v2/shorten?url=${encodeURIComponent(url)}`);
+        const data = await res.json();
+        if(!data.ok){throw new Error(data.error || "حدث خطأ أثناء الاختصار");}
+        const shortUrl = data.result.full_short_link; // الرابط المختصر المباشر
         shortLinkDiv.textContent = shortUrl;
         resultBox.style.display = "block";
-    }catch(err){alert("حدث خطأ في الاتصال: "+err.message);}
-    btn.disabled=false; btn.textContent="اختصر الرابط";
+    }catch(err){
+        alert("حدث خطأ في الاتصال: "+err.message);
+    }
+    
+    btn.disabled=false;
+    btn.textContent="اختصر الرابط";
 });
 
 copyBtn.addEventListener("click", ()=>{
