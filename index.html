@@ -1,10 +1,11 @@
-here<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مختصر الروابط</title>
 
+    <!-- الخط -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
@@ -109,6 +110,10 @@ here<!DOCTYPE html>
             font-weight: bold;
         }
 
+        .copy-btn:hover {
+            background: #22c55e;
+        }
+
         .ad-box {
             margin: 20px auto;
             display: flex;
@@ -122,13 +127,23 @@ here<!DOCTYPE html>
             font-size: 13px;
             color: #94a3b8;
         }
+
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+
+            #shortenBtn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>🔗 مختصر الروابط</h1>
-    <p class="subtitle">اختصر روابطك عبر API مباشر وسريع</p>
+    <p class="subtitle">اختصر روابطك عبر API وبسرعة</p>
 
     <div class="ad-box">
         <script src="https://pl28700469.effectivegatecpm.com/89/a6/b8/89a6b8558224cd67c0822829d68a87ad.js"></script>
@@ -139,75 +154,97 @@ here<!DOCTYPE html>
         <button id="shortenBtn">اختصر الرابط</button>
     </div>
 
+    <div class="ad-box">
+        <script async="async" data-cfasync="false"
+            src="https://pl28700474.effectivegatecpm.com/596225155ab3da796681d551cb4b7cf4/invoke.js">
+        </script>
+        <div id="container-596225155ab3da796681d551cb4b7cf4"></div>
+    </div>
+
     <div class="result" id="resultBox">
         <h3>تم الاختصار بنجاح</h3>
         <div class="short-link" id="shortLink"></div>
         <button class="copy-btn" id="copyBtn">نسخ الرابط</button>
     </div>
 
+    <div class="ad-box">
+        <script>
+            atOptions = {
+                'key': 'dcff8a2cffdf0642c627a5bacf3a04fd',
+                'format': 'iframe',
+                'height': 60,
+                'width': 468,
+                'params': {}
+            };
+        </script>
+        <script src="https://www.highperformanceformat.com/dcff8a2cffdf0642c627a5bacf3a04fd/invoke.js"></script>
+    </div>
+
     <div class="footer">
-        موقع اختصار روابط عبر API مباشر
+        موقع اختصار روابط عبر API
+    </div>
+
+    <div class="footer">
+        قناة المطور: https://t.me/Maro_hacker_eg
     </div>
 </div>
 
+<script src="https://pl28700485.effectivegatecpm.com/ad/c0/62/adc06235d53a0b6f378838879d3f116a.js"></script>
+
 <script>
-const btn = document.getElementById("shortenBtn");
-const input = document.getElementById("urlInput");
-const resultBox = document.getElementById("resultBox");
-const shortLinkDiv = document.getElementById("shortLink");
-const copyBtn = document.getElementById("copyBtn");
+    const btn = document.getElementById("shortenBtn");
+    const input = document.getElementById("urlInput");
+    const resultBox = document.getElementById("resultBox");
+    const shortLinkDiv = document.getElementById("shortLink");
+    const copyBtn = document.getElementById("copyBtn");
 
-btn.onclick = async () => {
-    let url = input.value.trim();
+    btn.onclick = async () => {
+        let url = input.value.trim();
 
-    if (!url) {
-        alert("ادخل رابط صحيح");
-        return;
-    }
-
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-        url = "https://" + url;
-    }
-
-    try {
-        new URL(url);
-    } catch {
-        alert("الرابط غير صالح");
-        return;
-    }
-
-    try {
-        const response = await fetch("https://cleanuri.com/api/v1/shorten", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ url: url })
-        });
-
-        const data = await response.json();
-
-        if (!data.result_url) {
-            alert("فشل الاتصال بالـ API");
+        if (!url) {
+            alert("ادخل رابط صحيح");
             return;
         }
 
-        shortLinkDiv.textContent = data.result_url;
-        resultBox.style.display = "block";
-        navigator.clipboard.writeText(data.result_url);
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "https://" + url;
+        }
 
-    } catch (err) {
-        alert("خطأ في الاتصال بالـ API");
-    }
-};
+        try {
+            new URL(url);
+        } catch {
+            alert("الرابط غير صالح");
+            return;
+        }
 
-copyBtn.onclick = () => {
-    navigator.clipboard.writeText(shortLinkDiv.textContent);
-    copyBtn.textContent = "تم النسخ ✓";
-    setTimeout(() => {
-        copyBtn.textContent = "نسخ الرابط";
-    }, 2000);
-};
+        try {
+            // تم استبدال API بـ API اختصار جاهز من الانترنت (is.gd)
+            const response = await fetch("https://is.gd/create.php?format=simple&url=" + encodeURIComponent(url));
+            const shortUrl = await response.text();
+
+            if (!shortUrl || !shortUrl.startsWith("http")) {
+                alert("فشل الاختصار عبر API");
+                return;
+            }
+
+            shortLinkDiv.textContent = shortUrl;
+            resultBox.style.display = "block";
+
+            navigator.clipboard.writeText(shortUrl);
+
+        } catch (e) {
+            alert("خطأ في الاتصال بالـ API");
+        }
+    };
+
+    copyBtn.onclick = () => {
+        navigator.clipboard.writeText(shortLinkDiv.textContent);
+        copyBtn.textContent = "تم النسخ ✓";
+
+        setTimeout(() => {
+            copyBtn.textContent = "نسخ الرابط";
+        }, 2000);
+    };
 </script>
 
 </body>
